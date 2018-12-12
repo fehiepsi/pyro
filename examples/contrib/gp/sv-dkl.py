@@ -58,9 +58,10 @@ def train(args, train_loader, gpmodule, optimizer, loss_fn, epoch):
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data = (data - 0.1307) / 0.3081  # normalize the data
-        gpmodule.set_data(data, target)
+        #gpmodule.set_data(data, target)
         optimizer.zero_grad()
-        loss = loss_fn(gpmodule.model, gpmodule.guide)
+        #loss = loss_fn(gpmodule.model, gpmodule.guide)
+        loss = gpmodule.kernel.iwarping_fn(data).sum()
         loss.backward()
         optimizer.step()
         if batch_idx % args.log_interval == 0:
