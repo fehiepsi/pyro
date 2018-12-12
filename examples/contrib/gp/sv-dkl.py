@@ -27,6 +27,8 @@ import pyro.contrib.gp as gp
 import pyro.infer as infer
 from pyro.contrib.examples.util import get_data_loader, get_data_directory
 
+torch.set_printoptions(12)
+
 
 class CNN(nn.Module):
     def __init__(self):
@@ -38,7 +40,9 @@ class CNN(nn.Module):
 
     def forward(self, x):
         start = time.time()
-        print("x shape", x.shape, x.dtype, x.sum(), x.is_contiguous())
+        print("x shape", x.shape, x.dtype, x.sum().item(), x.is_contiguous())
+        print(self.conv1.weight.data)
+        print(self.conv1.bias.data)
         x = self.conv1(x.clone())
         print("cnn conv1", time.time() - start)
         x = F.max_pool2d(x, 2)
