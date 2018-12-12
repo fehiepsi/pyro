@@ -12,7 +12,7 @@ cache:
 
 install:
     - pip install -U pip
-    - pip install numpy>=1.15
+    - pip install -U numpy
     - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
           pip install http://download.pytorch.org/whl/cpu/torch-1.0.0-cp27-cp27mu-linux_x86_64.whl;
       else
