@@ -38,8 +38,8 @@ class CNN(nn.Module):
 
     def forward(self, x):
         start = time.time()
-        print("x shape", x.shape, x.dtype)
-        x = self.conv1(x)
+        print("x shape", x.shape, x.dtype, x.sum(), x.is_contiguous())
+        x = self.conv1(x.clone())
         print("cnn conv1", time.time() - start)
         x = F.max_pool2d(x, 2)
         print("cnn max_pool2d", time.time() - start)
