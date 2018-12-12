@@ -128,7 +128,7 @@ def test_coverage():
                     pytest.fail('Example: {} not covered by JIT_EXAMPLES.'.format(example))
 
 
-@pytest.mark.parametrize('example', CPU_EXAMPLES[8:9])
+@pytest.mark.parametrize('example', CPU_EXAMPLES[7:8])
 def test_cpu(example):
     logger.info('Running:\npython examples/{}'.format(example))
     example = example.split()
