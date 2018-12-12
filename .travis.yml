@@ -5,6 +5,8 @@ sudo: true
 env:
     global:
         - PYTHONPATH=$PWD:$PYTHONPATH
+        - OMP_NUM_THREADS=1
+        - MKL_NUM_THREADS=1
 
 cache:
     directories:
