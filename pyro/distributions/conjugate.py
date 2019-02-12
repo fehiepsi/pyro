@@ -76,10 +76,7 @@ class BetaBinomial(TorchDistribution):
     def log_prob(self, value):
         if self._validate_args:
             self._validate_sample(value)
-        log_factorial_n = torch.lgamma(self.total_count + 1)
-        log_factorial_k = torch.lgamma(value + 1)
-        log_factorial_nmk = torch.lgamma(self.total_count - value + 1)
-        return (log_factorial_n - log_factorial_k - log_factorial_nmk +
+        return (-_log_beta_1(self.total_count - value + 1, value, is_sparse=False) +
                 _log_beta(value + self.concentration1, self.total_count - value + self.concentration0) -
                 _log_beta(self.concentration0, self.concentration1))
 
