@@ -2380,11 +2380,11 @@ def test_collapse_normal_mvn_mvn(num_particles):
             with pyro.plate("d", d, dim=-1):
                 expand_shape = (d, S) if num_particles == 1 else (num_particles, d, S)
                 beta0 = pyro.sample("beta0", dist.Normal(x, 1.).expand(expand_shape).to_event(1))
-                beta = pyro.sample("beta", dist.MultivariateNormal(beta0, torch.eye(S)))
+                beta = pyro.sample("beta", dist.MultivariateNormal(beta0, scale_tril=torch.eye(S)))
 
             mean = torch.ones((T, d)) @ beta
             with pyro.plate("data", T, dim=-1):
-                pyro.sample("obs", dist.MultivariateNormal(mean, torch.eye(S)), obs=data)
+                pyro.sample("obs", dist.MultivariateNormal(mean, scale_tril=torch.eye(S)), obs=data)
 
     def guide():
         loc = pyro.param("loc", torch.tensor(0.))

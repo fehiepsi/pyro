@@ -154,10 +154,15 @@ class CollapseMessenger(TraceMessenger):
         COERCIONS.append(self._coerce)
         return super().__enter__()
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type, exc_value, traceback):
         _coerce = COERCIONS.pop()
         assert _coerce is self._coerce
-        super().__exit__(*args)
+        super().__exit__(exc_type, exc_value, traceback)
+
+        if exc_type is not None:
+            self.trace.nodes.clear()
+            self.preserved_plates.clear()
+            return
 
         if any(site["type"] == "sample"
                for site in self.trace.nodes.values()):
@@ -180,6 +185,7 @@ class CollapseMessenger(TraceMessenger):
         assert log_prob_terms, "nothing to collapse"
         self.trace.nodes.clear()
         reduced_plates = plates - frozenset(self.preserved_plates.values())
+        self.preserved_plates.clear()
         if reduced_plates:
             log_prob = funsor.sum_product.sum_product(
                 funsor.ops.logaddexp,
